@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Group33_IC09</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_signUp">Sign Up</string>
+    <string name="et_email">Email</string>
+    <string name="et_password">Password</string>
+    <string name="et_signUpFirstName">First Name</string>
+    <string name="et_signUpLastName">Last Name</string>
+    <string name="et_signUpEmail">Email</string>
+    <string name="et_signUpPassword1">Choose Password</string>
+    <string name="et_signUpPassword2">Repeat Password</string>
+    <string name="btn_signUpConfirm">Sign Up</string>
+    <string name="btn_signUpCancel">Cancel</string>
+    <string name="tv_name">First Last</string>
+    <string name="tv_receiver">Send To:</string>
+    <string name="et_createSubject">Subject</string>
+    <string name="tv_createMessage">Message</string>
+    <string name="btn_createSend">Send</string>
+    <string name="btn_createCancel">Cancel</string>
+    <string name="tv_viewSender">From:</string>
+    <string name="tv_viewSubject">Subject</string>
+    <string name="tv_viewMessage">Message</string>
+    <string name="tv_viewDate">Created At:</string>
+    <string name="btn_viewClose">Close</string>
+</resources>
