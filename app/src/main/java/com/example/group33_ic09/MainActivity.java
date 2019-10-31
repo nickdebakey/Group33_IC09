@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.security.auth.callback.Callback;
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         btn_signUp = findViewById(R.id.btn_signUp);
 
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+
+        if (!sharedPref.getString(getString(R.string.preference_file_key), "").equals("")) {
+            Intent intent = new Intent(MainActivity.this, InboxActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
 
         // clicking on the "Login" button submits the login information for verification
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private class GetLogin extends AsyncTask<String, Void, String>{
@@ -105,13 +113,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            if (string == null || string.equals("")) {
+            if (string == null || string.equals("") || string.length() < 6) {
                 Toast.makeText(MainActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
-            }
-            Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show();
+            } else {
+                String[] stringArray = string.split(",");
+                String[] tokenArray = stringArray[1].split(":");
 
-            SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(
-                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("token", tokenArray[1]);
+                editor.commit();
+                Intent intent = new Intent(MainActivity.this, InboxActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 }
