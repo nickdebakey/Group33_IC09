@@ -117,14 +117,23 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
             } else {
                 String[] stringArray = string.split(",");
-                String[] tokenArray = stringArray[1].split(":");
+                String[] userInfo = new String[7];
+
+                for (int i = 0; i < stringArray.length; i++) {
+                    String[] tempArray = stringArray[i].split(":");
+                    userInfo[i] = tempArray[1];
+                }
 
                 Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                 SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("token", tokenArray[1]);
+                editor.putString("token", userInfo[1]);
+                editor.putInt("id", Integer.parseInt(userInfo[2].trim()));
+                editor.putString("email", userInfo[3]);
+                editor.putString("fName", userInfo[4]);
+                editor.putString("lName", userInfo[5]);
                 editor.commit();
                 Intent intent = new Intent(MainActivity.this, InboxActivity.class);
                 startActivity(intent);
