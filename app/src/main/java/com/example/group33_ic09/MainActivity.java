@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String string) {
-            super.onPostExecute(string);
             if (string == null || string.equals("") || string.length() < 6) {
                 Toast.makeText(MainActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
             } else {
