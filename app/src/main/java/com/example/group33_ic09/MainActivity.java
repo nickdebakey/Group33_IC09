@@ -2,7 +2,9 @@ package com.example.group33_ic09;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telecom.Call;
@@ -66,45 +68,50 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class GetLogin extends AsyncTask<String, Void, Request>{
+    private class GetLogin extends AsyncTask<String, Void, String>{
         String email = String.valueOf(et_email.getText());
         String password = String.valueOf(et_password.getText());
-        final OkHttpClient client = new OkHttpClient();
 
         @Override
-        protected Request doInBackground(String... strings) {
-            URL url = null;
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
             try {
-                url = new URL(strings[0]);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            RequestBody formBody = new FormBody.Builder()
-                            .add("email", email)
-                            .add("password", password)
-                            .build();
-            return new Request.Builder()
-                    .url(url)
-                    .post(formBody)
-                    .build();
-        }
+                URL url = new URL(strings[0]);
+                RequestBody formBody = new FormBody.Builder()
+                                .add("email", email)
+                                .add("password", password)
+                                .build();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(formBody)
+                        .build();
 
-        @Override
-        protected void onPostExecute(Request request) {
-            try (Response response = client.newCall(request).execute()) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Login Successful.", Toast.LENGTH_SHORT).show();
-                }
                 try {
-                    System.out.println(response.body().string());
+                    Response response = client.newCall(request).execute();
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    } else {
+                        return response.body().string();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
+            if (string == null || string.equals("")) {
+                Toast.makeText(MainActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show();
+
+            SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(
+                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         }
     }
 }
