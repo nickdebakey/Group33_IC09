@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("email", userInfo[3]);
                 editor.putString("fName", userInfo[4]);
                 editor.putString("lName", userInfo[5]);
-                editor.commit();
+                editor.apply();
                 Intent intent = new Intent(MainActivity.this, InboxActivity.class);
                 startActivity(intent);
                 finish();

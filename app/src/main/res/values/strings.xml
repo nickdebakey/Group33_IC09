@@ -23,4 +23,6 @@
     <string name="tv_viewDate">Created At:</string>
     <string name="btn_viewClose">Close</string>
     <string name ="preference_file_key">SharedPrefKey</string>
+    <string name="tv_subject">Subject</string>
+    <string name="tv_date">Date</string>
 </resources>
