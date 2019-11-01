@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -76,8 +77,8 @@ public class InboxActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
+                    .addHeader("Authorization", sharedPref.getString("token", "").replaceAll("\"", ""))
                     .url(strings[0])
-                    .addHeader("Authorization", "BEARER " + sharedPref.getString("token", "").replaceAll("\"", ""))
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
@@ -87,7 +88,8 @@ public class InboxActivity extends AppCompatActivity {
                 for (int i = 0; i < responseHeaders.size(); i++) {
                     System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
                 }
-                return Objects.requireNonNull(response.body()).string();
+
+                System.out.println(response.body().string());
             } catch (IOException e) {
                 e.printStackTrace();
             }
