@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,9 +77,8 @@ public class InboxActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(strings[0])
-                    .addHeader("Authorization", "BEARER" + sharedPref.getString("token", "").replaceAll("\"", ""))
+                    .addHeader("Authorization", "BEARER " + sharedPref.getString("token", "").replaceAll("\"", ""))
                     .build();
-            Log.d("demo", request.toString());
 
             try (Response response = client.newCall(request).execute()) {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
